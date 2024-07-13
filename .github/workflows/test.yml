@@ -1,0 +1,31 @@
+name: Pull Request Workflow
+
+on: 
+  pull_request_target:
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Check if pull request is from a fork
+      id: check_fork
+      run: |
+        if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+          echo "::set-output name=is_fork::true"
+        else
+          echo "::set-output name=is_fork::false"
+        fi
+
+    - name: Run for pull request from forked repository
+      if: ${{ steps.check_fork.outputs.is_fork == 'true' }}
+      run: |
+        echo "フォークリポジトリから"
+
+    - name: Run for pull request from base repository
+      if: ${{ steps.check_fork.outputs.is_fork == 'false' }}
+      run: |
+        echo "ベースリポジトリから"

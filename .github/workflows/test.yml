@@ -2,6 +2,7 @@ name: Pull Request Workflow
 
 on: 
   pull_request_target:
+  pull_request:
 
 jobs:
   example_job:
@@ -15,9 +16,11 @@ jobs:
       id: check_fork
       run: |
         if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
-          echo "::set-output name=is_fork::true"
+          # echo "::set-output name=is_fork::true"
+          echo "is_fork=true" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=is_fork::false"
+          # echo "::set-output name=is_fork::false"
+          echo "is_fork=false" >> $GITHUB_OUTPUT
         fi
 
     - name: Run for pull request from forked repository

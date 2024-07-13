@@ -30,5 +30,10 @@ jobs:
 
     - name: Run for pull request from base repository
       if: ${{ steps.check_fork.outputs.is_fork == 'false' }}
-      run: |
-        echo "ベースリポジトリから"
+      uses: sarisia/actions-status-discord@v1.13.0
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        title: イベント通知
+        nofail: true
+        noprefix: true
+        notimestamp: true
